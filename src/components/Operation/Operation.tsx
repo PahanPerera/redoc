@@ -41,8 +41,8 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
               {summary} {deprecated && <Badge type="warning"> Deprecated </Badge>}
               {isWebhook && (
                 <Badge type="primary">
-                  {' '}
-                  Webhook {showWebhookVerb && httpVerb && '| ' + httpVerb.toUpperCase()}
+                  {/* async-pahan */}
+                  {showWebhookVerb && httpVerb && httpVerb.toUpperCase()}
                 </Badge>
               )}
             </H2>
@@ -62,7 +62,8 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
             <CallbacksList callbacks={operation.callbacks} />
           </MiddlePanel>
           <DarkRightPanel>
-            {!options.pathInMiddlePanel && !isWebhook && <Endpoint operation={operation} />}
+            {/* async-pahan */}
+            {!options.pathInMiddlePanel && <Endpoint operation={operation} />}
             <RequestSamples operation={operation} />
             <ResponseSamples operation={operation} />
             <CallbackSamples callbacks={operation.callbacks} />

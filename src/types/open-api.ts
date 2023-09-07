@@ -62,6 +62,9 @@ export interface OpenAPIPath {
   servers?: OpenAPIServer[];
   parameters?: Array<Referenced<OpenAPIParameter>>;
   $ref?: string;
+  // pahan-async
+  subscribe: OpenAPIOperation;
+  publish: OpenAPIOperation;
 }
 
 export interface OpenAPIXCodeSample {

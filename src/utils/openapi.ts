@@ -59,6 +59,9 @@ const operationNames = {
   delete: true,
   options: true,
   $ref: true,
+  // async-pahan
+  subscribe: true,
+  publish: true,
 };
 
 export function isOperationName(key: string): boolean {
