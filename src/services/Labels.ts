@@ -18,6 +18,7 @@ const labels: LabelsConfig = {
   responses: 'Responses',
   callbackResponses: 'Callback responses',
   requestSamples: 'Request samples',
+  payloadSamples: 'Payload samples',
   responseSamples: 'Response samples',
 };
 

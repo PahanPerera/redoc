@@ -24,6 +24,7 @@ function safePush(obj, prop, item) {
 export interface ParametersProps {
   parameters?: FieldModel[];
   body?: RequestBodyModel;
+  isWebhook?: boolean;
 }
 
 const PARAM_PLACES = ['path', 'query', 'cookie', 'header'];
@@ -63,6 +64,7 @@ export class Parameters extends React.PureComponent<ParametersProps> {
             content={bodyContent}
             description={bodyDescription}
             bodyRequired={bodyRequired}
+            isWebhook={this.props.isWebhook}
           />
         )}
       </>
@@ -73,13 +75,14 @@ export class Parameters extends React.PureComponent<ParametersProps> {
 function DropdownWithinHeader({
   bodyRequired,
   ...props
-}: DropdownOrLabelProps & { bodyRequired?: boolean }) {
+}: DropdownOrLabelProps & { bodyRequired?: boolean; isWebhook?: boolean }) {
   const isRequired = typeof bodyRequired === 'boolean' && !!bodyRequired;
   const isOptional = typeof bodyRequired === 'boolean' && !bodyRequired;
 
+  const headerTitle = props.isWebhook ? 'Payload schema' : 'Request Body schema';
   return (
     <UnderlinedHeader key="header">
-      Request Body schema: <DropdownOrLabel {...props} />
+      {headerTitle}: <DropdownOrLabel {...props} />
       {isRequired && <RequiredBody>required</RequiredBody>}
       {isOptional && <OptionalBody>optional</OptionalBody>}
     </UnderlinedHeader>
@@ -90,13 +93,16 @@ export function BodyContent(props: {
   content: MediaContentModel;
   description?: string;
   bodyRequired?: boolean;
+  isWebhook?: boolean;
 }): JSX.Element {
-  const { content, description, bodyRequired } = props;
+  const { content, description, bodyRequired, isWebhook } = props;
   const { isRequestType } = content;
   return (
     <MediaTypesSwitch
       content={content}
-      renderDropdown={props => <DropdownWithinHeader bodyRequired={bodyRequired} {...props} />}
+      renderDropdown={props => (
+        <DropdownWithinHeader bodyRequired={bodyRequired} {...props} isWebhook={isWebhook} />
+      )}
     >
       {({ schema }) => {
         return (

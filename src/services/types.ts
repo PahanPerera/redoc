@@ -41,6 +41,7 @@ export interface LabelsConfig {
   responses: string;
   callbackResponses: string;
   requestSamples: string;
+  payloadSamples: string;
   responseSamples: string;
 }
 

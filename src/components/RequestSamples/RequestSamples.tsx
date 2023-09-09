@@ -27,7 +27,9 @@ export class RequestSamples extends React.Component<RequestSamplesProps> {
     return (
       (hasSamples && (
         <div>
-          <RightPanelHeader> {l('requestSamples')} </RightPanelHeader>
+          <RightPanelHeader>
+            {operation.isWebhook ? l('payloadSamples') : l('requestSamples')}
+          </RightPanelHeader>
 
           <Tabs defaultIndex={0}>
             <TabList hidden={hideTabList}>
