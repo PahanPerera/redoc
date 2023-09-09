@@ -25611,22 +25611,22 @@
               return ty;
             },
             Redoc: function () {
-              return tx;
+              return rx;
             },
             destroy: function () {
-              return bx;
+              return wx;
             },
             hydrate: function () {
-              return xx;
+              return kx;
             },
             init: function () {
-              return vx;
+              return xx;
             },
             revision: function () {
-              return gx;
+              return vx;
             },
             version: function () {
-              return mx;
+              return yx;
             },
           });
         var e = {};
@@ -29430,6 +29430,7 @@
           responses: 'Responses',
           callbackResponses: 'Callback responses',
           requestSamples: 'Request samples',
+          payloadSamples: 'Payload samples',
           responseSamples: 'Response samples',
         };
         function di(e, t) {
@@ -31476,7 +31477,7 @@
                   n.createElement('small', null, ' ReDoc Version: ', '2.1.1'),
                   ' ',
                   n.createElement('br', null),
-                  n.createElement('small', null, ' Commit: ', '18c65aa3'),
+                  n.createElement('small', null, ' Commit: ', '59d5bc50'),
                 )
               : n.createElement(n.Fragment, null, n.Children.only(this.props.children));
           }
@@ -42183,27 +42184,29 @@
           return o;
         })([om], Wy);
         var Hy = Object.defineProperty,
-          Yy = Object.getOwnPropertySymbols,
-          Qy = Object.prototype.hasOwnProperty,
-          Gy = Object.prototype.propertyIsEnumerable,
-          Xy = (e, t, n) =>
+          Yy = Object.defineProperties,
+          Qy = Object.getOwnPropertyDescriptors,
+          Gy = Object.getOwnPropertySymbols,
+          Xy = Object.prototype.hasOwnProperty,
+          Ky = Object.prototype.propertyIsEnumerable,
+          Zy = (e, t, n) =>
             t in e
               ? Hy(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n),
-          Ky = (e, t) => {
-            for (var n in t || (t = {})) Qy.call(t, n) && Xy(e, n, t[n]);
-            if (Yy) for (var n of Yy(t)) Gy.call(t, n) && Xy(e, n, t[n]);
+          Jy = (e, t) => {
+            for (var n in t || (t = {})) Xy.call(t, n) && Zy(e, n, t[n]);
+            if (Gy) for (var n of Gy(t)) Ky.call(t, n) && Zy(e, n, t[n]);
             return e;
           },
-          Zy = (e, t) => {
+          ev = (e, t) => {
             var n = {};
-            for (var r in e) Qy.call(e, r) && t.indexOf(r) < 0 && (n[r] = e[r]);
-            if (null != e && Yy)
-              for (var r of Yy(e)) t.indexOf(r) < 0 && Gy.call(e, r) && (n[r] = e[r]);
+            for (var r in e) Xy.call(e, r) && t.indexOf(r) < 0 && (n[r] = e[r]);
+            if (null != e && Gy)
+              for (var r of Gy(e)) t.indexOf(r) < 0 && Ky.call(e, r) && (n[r] = e[r]);
             return n;
           };
-        const Jy = ['path', 'query', 'cookie', 'header'];
-        class ev extends n.PureComponent {
+        const tv = ['path', 'query', 'cookie', 'header'];
+        class nv extends n.PureComponent {
           orderParams(e) {
             const t = {};
             return (
@@ -42218,7 +42221,7 @@
             const { body: e, parameters: t = [] } = this.props;
             if (void 0 === e && void 0 === t) return null;
             const r = this.orderParams(t),
-              i = t.length > 0 ? Jy : [],
+              i = t.length > 0 ? tv : [],
               o = e && e.content,
               a = e && e.description,
               s = e && e.required;
@@ -42226,31 +42229,46 @@
               n.Fragment,
               null,
               i.map(e => n.createElement(Vy, { key: e, place: e, parameters: r[e] })),
-              o && n.createElement(nv, { content: o, description: a, bodyRequired: s }),
+              o &&
+                n.createElement(iv, {
+                  content: o,
+                  description: a,
+                  bodyRequired: s,
+                  isWebhook: this.props.isWebhook,
+                }),
             );
           }
         }
-        function tv(e) {
+        function rv(e) {
           var t = e,
             { bodyRequired: r } = t,
-            i = Zy(t, ['bodyRequired']);
+            i = ev(t, ['bodyRequired']);
           const o = 'boolean' == typeof r && !!r,
-            a = 'boolean' == typeof r && !r;
+            a = 'boolean' == typeof r && !r,
+            s = i.isWebhook ? 'Payload schema' : 'Request Body schema';
           return n.createElement(
             $u,
             { key: 'header' },
-            'Request Body schema: ',
-            n.createElement(Sf, Ky({}, i)),
-            o && n.createElement(iv, null, 'required'),
-            a && n.createElement(ov, null, 'optional'),
+            s,
+            ': ',
+            n.createElement(Sf, Jy({}, i)),
+            o && n.createElement(av, null, 'required'),
+            a && n.createElement(sv, null, 'optional'),
           );
         }
-        function nv(e) {
-          const { content: t, description: r, bodyRequired: i } = e,
-            { isRequestType: o } = t;
+        function iv(e) {
+          const { content: t, description: r, bodyRequired: i, isWebhook: o } = e,
+            { isRequestType: a } = t;
           return n.createElement(
             Wy,
-            { content: t, renderDropdown: e => n.createElement(tv, Ky({ bodyRequired: i }, e)) },
+            {
+              content: t,
+              renderDropdown: e =>
+                n.createElement(
+                  rv,
+                  ((e, t) => Yy(e, Qy(t)))(Jy({ bodyRequired: i }, e), { isWebhook: o }),
+                ),
+            },
             ({ schema: e }) =>
               n.createElement(
                 n.Fragment,
@@ -42259,24 +42277,24 @@
                 'object' === (null == e ? void 0 : e.type) &&
                   n.createElement(jm, { constraints: (null == e ? void 0 : e.constraints) || [] }),
                 n.createElement(jg, {
-                  skipReadOnly: o,
-                  skipWriteOnly: !o,
+                  skipReadOnly: a,
+                  skipWriteOnly: !a,
                   key: 'schema',
                   schema: e,
                 }),
               ),
           );
         }
-        const rv = '\n  text-transform: lowercase;\n  margin-left: 0;\n  line-height: 1.5em;\n',
-          iv = ha(dm)`
-  ${rv}
+        const ov = '\n  text-transform: lowercase;\n  margin-left: 0;\n  line-height: 1.5em;\n',
+          av = ha(dm)`
+  ${ov}
 `,
-          ov = ha('div')`
-  ${rv}
+          sv = ha('div')`
+  ${ov}
   color: ${({ theme: e }) => e.colors.text.secondary};
   font-size: ${e => e.theme.schema.labelsTextSize};
 `,
-          av = ha(
+          lv = ha(
             n.memo(function ({
               title: e,
               type: t,
@@ -42296,7 +42314,7 @@
                     direction: o ? 'down' : 'right',
                     float: 'left',
                   }),
-                n.createElement(cv, null, i, ' '),
+                n.createElement(pv, null, i, ' '),
                 n.createElement(Lf, { compact: !0, inline: !0, source: e }),
               );
             }),
@@ -42321,18 +42339,18 @@
       ? '\ncursor: default;\n&::before {\n  content: "—";\n  font-weight: bold;\n  width: 1.5em;\n  text-align: center;\n  display: inline-block;\n  vertical-align: top;\n}\n&:focus {\n  outline: 0;\n}\n'
       : ''};
 `,
-          sv = ha.div`
+          cv = ha.div`
   padding: 10px;
 `,
-          lv = ha($u).attrs({ as: 'caption' })`
+          uv = ha($u).attrs({ as: 'caption' })`
   text-align: left;
   margin-top: 1em;
   caption-side: top;
 `,
-          cv = ha.strong`
+          pv = ha.strong`
   vertical-align: top;
 `;
-        class uv extends n.PureComponent {
+        class dv extends n.PureComponent {
           render() {
             const { headers: e } = this.props;
             return void 0 === e || 0 === e.length
@@ -42340,7 +42358,7 @@
               : n.createElement(
                   Ju,
                   null,
-                  n.createElement(lv, null, ' Response Headers '),
+                  n.createElement(uv, null, ' Response Headers '),
                   n.createElement(
                     'tbody',
                     null,
@@ -42351,15 +42369,15 @@
                 );
           }
         }
-        var pv = Object.defineProperty,
-          dv = Object.getOwnPropertySymbols,
-          fv = Object.prototype.hasOwnProperty,
-          hv = Object.prototype.propertyIsEnumerable,
-          mv = (e, t, n) =>
+        var fv = Object.defineProperty,
+          hv = Object.getOwnPropertySymbols,
+          mv = Object.prototype.hasOwnProperty,
+          gv = Object.prototype.propertyIsEnumerable,
+          yv = (e, t, n) =>
             t in e
-              ? pv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? fv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        class gv extends n.PureComponent {
+        class vv extends n.PureComponent {
           constructor() {
             super(...arguments),
               (this.renderDropdown = e =>
@@ -42370,8 +42388,8 @@
                   n.createElement(
                     Sf,
                     ((e, t) => {
-                      for (var n in t || (t = {})) fv.call(t, n) && mv(e, n, t[n]);
-                      if (dv) for (var n of dv(t)) hv.call(t, n) && mv(e, n, t[n]);
+                      for (var n in t || (t = {})) mv.call(t, n) && yv(e, n, t[n]);
+                      if (hv) for (var n of hv(t)) gv.call(t, n) && yv(e, n, t[n]);
                       return e;
                     })({}, e),
                   ),
@@ -42384,7 +42402,7 @@
               null,
               e && n.createElement(Lf, { source: e }),
               n.createElement(Em, { extensions: t }),
-              n.createElement(uv, { headers: r }),
+              n.createElement(dv, { headers: r }),
               n.createElement(
                 Wy,
                 { content: i, renderDropdown: this.renderDropdown },
@@ -42402,7 +42420,7 @@
             );
           }
         }
-        const yv = om(({ response: e }) => {
+        const bv = om(({ response: e }) => {
             const {
                 extensions: t,
                 headers: r,
@@ -42425,7 +42443,7 @@
             return n.createElement(
               'div',
               null,
-              n.createElement(av, {
+              n.createElement(lv, {
                 onClick: () => e.toggle(),
                 type: i,
                 empty: p,
@@ -42433,30 +42451,30 @@
                 code: s,
                 opened: l,
               }),
-              l && !p && n.createElement(sv, null, n.createElement(gv, { response: e })),
+              l && !p && n.createElement(cv, null, n.createElement(vv, { response: e })),
             );
           }),
-          vv = ha.h3`
+          xv = ha.h3`
   font-size: 1.3em;
   padding: 0.2em 0;
   margin: 3em 0 1.1em;
   color: ${({ theme: e }) => e.colors.text.primary};
   font-weight: normal;
 `;
-        class bv extends n.PureComponent {
+        class wv extends n.PureComponent {
           render() {
             const { responses: e, isCallback: t } = this.props;
             return e && 0 !== e.length
               ? n.createElement(
                   'div',
                   null,
-                  n.createElement(vv, null, di(t ? 'callbackResponses' : 'responses')),
-                  e.map(e => n.createElement(yv, { key: e.code, response: e })),
+                  n.createElement(xv, null, di(t ? 'callbackResponses' : 'responses')),
+                  e.map(e => n.createElement(bv, { key: e.code, response: e })),
                 )
               : null;
           }
         }
-        function xv(e) {
+        function kv(e) {
           const { security: t, showSecuritySchemeType: r, expanded: i } = e,
             o = t.schemes.length > 1;
           return 0 === t.schemes.length
@@ -42479,7 +42497,7 @@
                 o && ') ',
               );
         }
-        const wv = ({ scopes: e }) =>
+        const Ov = ({ scopes: e }) =>
           e.length
             ? n.createElement(
                 'div',
@@ -42490,7 +42508,7 @@
                 ),
               )
             : null;
-        function kv(e) {
+        function Sv(e) {
           const t = (0, n.useContext)(Nu),
             r = null == t ? void 0 : t.options.showSecuritySchemeType,
             [i, o] = (0, n.useState)(!1),
@@ -42522,7 +42540,7 @@
                 Bg,
                 { expanded: i },
                 a.map((e, t) =>
-                  n.createElement(xv, {
+                  n.createElement(kv, {
                     key: t,
                     expanded: i,
                     showSecuritySchemeType: r,
@@ -42540,7 +42558,7 @@
                   n.createElement(
                     'h5',
                     null,
-                    n.createElement(Ov, null),
+                    n.createElement(Ev, null),
                     ' ',
                     Jg[e.type] || e.type,
                     ': ',
@@ -42550,13 +42568,13 @@
                   n.createElement(Zg, {
                     key: e.id,
                     scheme: e,
-                    RequiredScopes: n.createElement(wv, { scopes: Sv(e.id, a) }),
+                    RequiredScopes: n.createElement(Ov, { scopes: _v(e.id, a) }),
                   }),
                 ),
               ),
           );
         }
-        const Ov = () =>
+        const Ev = () =>
           n.createElement(
             'svg',
             {
@@ -42570,7 +42588,7 @@
               d: 'M18 10V6A6 6 0 0 0 6 6v4H3v14h18V10h-3zM8 6c0-2.206 1.794-4 4-4s4 1.794 4 4v4H8V6zm11 16H5V12h14v10z',
             }),
           );
-        function Sv(e, t) {
+        function _v(e, t) {
           const n = [];
           let r = t.length;
           for (; r--; ) {
@@ -42584,7 +42602,7 @@
           return Array.from(new Set(n));
         }
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Ev = class extends n.Component {
+        let Av = class extends n.Component {
           render() {
             const { operation: e } = this.props,
               { description: t, externalDocs: r } = e,
@@ -42594,28 +42612,28 @@
               null,
               i &&
                 n.createElement(
-                  _v,
+                  jv,
                   null,
                   void 0 !== t && n.createElement(Lf, { source: t }),
                   r && n.createElement(wm, { externalDocs: r }),
                 ),
               n.createElement(qy, { operation: this.props.operation, inverted: !0, compact: !0 }),
               n.createElement(Em, { extensions: e.extensions }),
-              n.createElement(kv, { securities: e.security }),
-              n.createElement(ev, { parameters: e.parameters, body: e.requestBody }),
-              n.createElement(bv, { responses: e.responses, isCallback: e.isCallback }),
+              n.createElement(Sv, { securities: e.security }),
+              n.createElement(nv, { parameters: e.parameters, body: e.requestBody }),
+              n.createElement(wv, { responses: e.responses, isCallback: e.isCallback }),
             );
           }
         };
-        Ev = ((e, t, n, r) => {
+        Av = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Ev);
-        const _v = ha.div`
+        })([om], Av);
+        const jv = ha.div`
   margin-bottom: ${({ theme: e }) => 3 * e.spacing.unit}px;
 `;
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Av = class extends n.Component {
+        let Cv = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.toggle = () => {
@@ -42639,32 +42657,32 @@
                 httpVerb: r,
                 deprecated: i,
               }),
-              t && n.createElement(Ev, { operation: this.props.callbackOperation }),
+              t && n.createElement(Av, { operation: this.props.callbackOperation }),
             );
           }
         };
-        Av = ((e, t, n, r) => {
+        Cv = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Av);
-        class jv extends n.PureComponent {
+        })([om], Cv);
+        class Pv extends n.PureComponent {
           render() {
             const { callbacks: e } = this.props;
             return e && 0 !== e.length
               ? n.createElement(
                   'div',
                   null,
-                  n.createElement(Cv, null, ' Callbacks '),
+                  n.createElement(Tv, null, ' Callbacks '),
                   e.map(e =>
                     e.operations.map((t, r) =>
-                      n.createElement(Av, { key: `${e.name}_${r}`, callbackOperation: t }),
+                      n.createElement(Cv, { key: `${e.name}_${r}`, callbackOperation: t }),
                     ),
                   ),
                 )
               : null;
           }
         }
-        const Cv = ha.h3`
+        const Tv = ha.h3`
   font-size: 1.3em;
   padding: 0.2em 0;
   margin: 3em 0 1.1em;
@@ -42672,7 +42690,7 @@
   font-weight: normal;
 `;
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Pv = class extends n.Component {
+        let Iv = class extends n.Component {
           constructor(e) {
             super(e),
               (this.switchItem = ({ idx: e }) => {
@@ -42704,32 +42722,32 @@
             );
           }
         };
-        Pv = ((e, t, n, r) => {
+        Iv = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Pv);
-        var Tv = Object.defineProperty,
-          Iv = Object.defineProperties,
-          Rv = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
-          $v = Object.getOwnPropertySymbols,
-          Nv = Object.prototype.hasOwnProperty,
-          Lv = Object.prototype.propertyIsEnumerable,
-          Dv = (e, t, n) =>
+        })([om], Iv);
+        var Rv = Object.defineProperty,
+          $v = Object.defineProperties,
+          Nv = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
+          Lv = Object.getOwnPropertySymbols,
+          Dv = Object.prototype.hasOwnProperty,
+          Mv = Object.prototype.propertyIsEnumerable,
+          Fv = (e, t, n) =>
             t in e
-              ? Tv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? Rv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        let Mv = class extends n.Component {
+        let zv = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.renderDropdown = e => {
                 return n.createElement(
                   Sf,
                   ((t = ((e, t) => {
-                    for (var n in t || (t = {})) Nv.call(t, n) && Dv(e, n, t[n]);
-                    if ($v) for (var n of $v(t)) Lv.call(t, n) && Dv(e, n, t[n]);
+                    for (var n in t || (t = {})) Dv.call(t, n) && Fv(e, n, t[n]);
+                    if (Lv) for (var n of Lv(t)) Mv.call(t, n) && Fv(e, n, t[n]);
                     return e;
                   })({ Label: lh, Dropdown: ph }, e)),
-                  Iv(t, Rv({ variant: 'dark' }))),
+                  $v(t, Nv({ variant: 'dark' }))),
                 );
                 var t;
               });
@@ -42750,43 +42768,43 @@
                 );
           }
         };
-        Mv = ((e, t, n, r) => {
+        zv = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Mv);
-        class Fv extends n.Component {
+        })([om], zv);
+        class Uv extends n.Component {
           render() {
             const e = this.props.callback.codeSamples.find(e => wu(e));
             return e
-              ? n.createElement(zv, null, n.createElement(Mv, { content: e.requestBodyContent }))
+              ? n.createElement(Bv, null, n.createElement(zv, { content: e.requestBodyContent }))
               : null;
           }
         }
-        const zv = ha.div`
+        const Bv = ha.div`
   margin-top: 15px;
 `;
-        var Uv = Object.defineProperty,
-          Bv = Object.defineProperties,
-          qv = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
-          Vv = Object.getOwnPropertySymbols,
-          Wv = Object.prototype.hasOwnProperty,
-          Hv = Object.prototype.propertyIsEnumerable,
-          Yv = (e, t, n) =>
+        var qv = Object.defineProperty,
+          Vv = Object.defineProperties,
+          Wv = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
+          Hv = Object.getOwnPropertySymbols,
+          Yv = Object.prototype.hasOwnProperty,
+          Qv = Object.prototype.propertyIsEnumerable,
+          Gv = (e, t, n) =>
             t in e
-              ? Uv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? qv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        let Qv = class extends n.Component {
+        let Xv = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.renderDropdown = e => {
                 return n.createElement(
                   Sf,
                   ((t = ((e, t) => {
-                    for (var n in t || (t = {})) Wv.call(t, n) && Yv(e, n, t[n]);
-                    if (Vv) for (var n of Vv(t)) Hv.call(t, n) && Yv(e, n, t[n]);
+                    for (var n in t || (t = {})) Yv.call(t, n) && Gv(e, n, t[n]);
+                    if (Hv) for (var n of Hv(t)) Qv.call(t, n) && Gv(e, n, t[n]);
                     return e;
                   })({ Label: lh, Dropdown: ph }, e)),
-                  Bv(t, qv({ variant: 'dark' }))),
+                  Vv(t, Wv({ variant: 'dark' }))),
                 );
                 var t;
               });
@@ -42805,13 +42823,13 @@
               null,
               n.createElement(Ru, null, ' Callback payload samples '),
               n.createElement(
-                Gv,
+                Kv,
                 null,
                 n.createElement(
-                  Pv,
+                  Iv,
                   { items: t, renderDropdown: this.renderDropdown, label: 'Callback', options: r },
                   e =>
-                    n.createElement(Fv, {
+                    n.createElement(Uv, {
                       key: 'callbackPayloadSample',
                       callback: e,
                       renderDropdown: this.renderDropdown,
@@ -42821,17 +42839,17 @@
             );
           }
         };
-        (Qv.contextType = Oa),
-          (Qv = ((e, t, n, r) => {
+        (Xv.contextType = Oa),
+          (Xv = ((e, t, n, r) => {
             for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
             return o;
-          })([om], Qv));
-        const Gv = ha.div`
+          })([om], Xv));
+        const Kv = ha.div`
   background: ${({ theme: e }) => e.codeBlock.backgroundColor};
   padding: ${e => 4 * e.theme.spacing.unit}px;
 `;
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Xv = class extends n.Component {
+        let Zv = class extends n.Component {
           render() {
             const { operation: e } = this.props,
               t = e.codeSamples,
@@ -42842,7 +42860,11 @@
                 n.createElement(
                   'div',
                   null,
-                  n.createElement(Ru, null, ' ', di('requestSamples'), ' '),
+                  n.createElement(
+                    Ru,
+                    null,
+                    e.isWebhook ? di('payloadSamples') : di('requestSamples'),
+                  ),
                   n.createElement(
                     Dp,
                     { defaultIndex: 0 },
@@ -42865,7 +42887,7 @@
                           ? n.createElement(
                               'div',
                               null,
-                              n.createElement(Mv, { content: e.requestBodyContent }),
+                              n.createElement(zv, { content: e.requestBodyContent }),
                             )
                           : n.createElement(rh, { lang: e.lang, source: e.source }),
                       ),
@@ -42876,13 +42898,13 @@
             );
           }
         };
-        (Xv.contextType = Oa),
-          (Xv = ((e, t, n, r) => {
+        (Zv.contextType = Oa),
+          (Zv = ((e, t, n, r) => {
             for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
             return o;
-          })([om], Xv));
+          })([om], Zv));
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Kv = class extends n.Component {
+        let Jv = class extends n.Component {
           render() {
             const { operation: e } = this.props,
               t = e.responses.filter(e => e.content && e.content.hasSample);
@@ -42906,7 +42928,7 @@
                       n.createElement(
                         Lp,
                         { key: e.code },
-                        n.createElement('div', null, n.createElement(Mv, { content: e.content })),
+                        n.createElement('div', null, n.createElement(zv, { content: e.content })),
                       ),
                     ),
                   ),
@@ -42915,24 +42937,24 @@
             );
           }
         };
-        Kv = ((e, t, n, r) => {
+        Jv = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Kv);
-        var Zv = Object.defineProperty,
-          Jv = Object.defineProperties,
-          eb = Object.getOwnPropertyDescriptors,
-          tb = Object.getOwnPropertySymbols,
-          nb = Object.prototype.hasOwnProperty,
-          rb = Object.prototype.propertyIsEnumerable,
-          ib = (e, t, n) =>
+        })([om], Jv);
+        var eb = Object.defineProperty,
+          tb = Object.defineProperties,
+          nb = Object.getOwnPropertyDescriptors,
+          rb = Object.getOwnPropertySymbols,
+          ib = Object.prototype.hasOwnProperty,
+          ob = Object.prototype.propertyIsEnumerable,
+          ab = (e, t, n) =>
             t in e
-              ? Zv(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? eb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        const ob = ha.div`
+        const sb = ha.div`
   margin-bottom: ${({ theme: e }) => 6 * e.spacing.unit}px;
 `,
-          ab = om(({ operation: e }) => {
+          lb = om(({ operation: e }) => {
             const {
                 name: t,
                 description: r,
@@ -42946,10 +42968,10 @@
             return n.createElement(Oa.Consumer, null, u =>
               n.createElement(
                 ju,
-                ((e, t) => Jv(e, eb(t)))(
+                ((e, t) => tb(e, nb(t)))(
                   ((e, t) => {
-                    for (var n in t || (t = {})) nb.call(t, n) && ib(e, n, t[n]);
-                    if (tb) for (var n of tb(t)) rb.call(t, n) && ib(e, n, t[n]);
+                    for (var n in t || (t = {})) ib.call(t, n) && ab(e, n, t[n]);
+                    if (rb) for (var n of rb(t)) ob.call(t, n) && ab(e, n, t[n]);
                     return e;
                   })({}, { [pf]: e.operationHash }),
                   { id: e.operationHash },
@@ -42969,50 +42991,54 @@
                   u.pathInMiddlePanel && !a && n.createElement(qy, { operation: e, inverted: !0 }),
                   l &&
                     n.createElement(
-                      ob,
+                      sb,
                       null,
                       void 0 !== r && n.createElement(Lf, { source: r }),
                       o && n.createElement(wm, { externalDocs: o }),
                     ),
                   n.createElement(Em, { extensions: e.extensions }),
-                  n.createElement(kv, { securities: e.security }),
-                  n.createElement(ev, { parameters: e.parameters, body: e.requestBody }),
-                  n.createElement(bv, { responses: e.responses }),
-                  n.createElement(jv, { callbacks: e.callbacks }),
+                  n.createElement(Sv, { securities: e.security }),
+                  n.createElement(nv, {
+                    parameters: e.parameters,
+                    body: e.requestBody,
+                    isWebhook: e.isWebhook,
+                  }),
+                  n.createElement(wv, { responses: e.responses }),
+                  n.createElement(Pv, { callbacks: e.callbacks }),
                 ),
                 n.createElement(
                   Au,
                   null,
                   !u.pathInMiddlePanel && n.createElement(qy, { operation: e }),
-                  n.createElement(Xv, { operation: e }),
-                  n.createElement(Kv, { operation: e }),
-                  n.createElement(Qv, { callbacks: e.callbacks }),
+                  n.createElement(Zv, { operation: e }),
+                  n.createElement(Jv, { operation: e }),
+                  n.createElement(Xv, { callbacks: e.callbacks }),
                 ),
               ),
             );
           });
-        var sb = Object.defineProperty,
-          lb = Object.getOwnPropertyDescriptor,
-          cb = Object.getOwnPropertySymbols,
-          ub = Object.prototype.hasOwnProperty,
-          pb = Object.prototype.propertyIsEnumerable,
-          db = (e, t, n) =>
+        var cb = Object.defineProperty,
+          ub = Object.getOwnPropertyDescriptor,
+          pb = Object.getOwnPropertySymbols,
+          db = Object.prototype.hasOwnProperty,
+          fb = Object.prototype.propertyIsEnumerable,
+          hb = (e, t, n) =>
             t in e
-              ? sb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? cb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n),
-          fb = (e, t, n, r) => {
-            for (var i, o = r > 1 ? void 0 : r ? lb(t, n) : t, a = e.length - 1; a >= 0; a--)
+          mb = (e, t, n, r) => {
+            for (var i, o = r > 1 ? void 0 : r ? ub(t, n) : t, a = e.length - 1; a >= 0; a--)
               (i = e[a]) && (o = (r ? i(t, n, o) : i(o)) || o);
-            return r && o && sb(t, n, o), o;
+            return r && o && cb(t, n, o), o;
           };
-        let hb = class extends n.Component {
+        let gb = class extends n.Component {
           render() {
             const e = this.props.items;
-            return 0 === e.length ? null : e.map(e => n.createElement(mb, { key: e.id, item: e }));
+            return 0 === e.length ? null : e.map(e => n.createElement(yb, { key: e.id, item: e }));
           }
         };
-        hb = fb([om], hb);
-        let mb = class extends n.Component {
+        gb = mb([om], gb);
+        let yb = class extends n.Component {
           render() {
             const e = this.props.item;
             let t;
@@ -43025,28 +43051,28 @@
               case 'section':
               default:
                 t = n.createElement(
-                  yb,
+                  bb,
                   ((e, t) => {
-                    for (var n in t || (t = {})) ub.call(t, n) && db(e, n, t[n]);
-                    if (cb) for (var n of cb(t)) pb.call(t, n) && db(e, n, t[n]);
+                    for (var n in t || (t = {})) db.call(t, n) && hb(e, n, t[n]);
+                    if (pb) for (var n of pb(t)) fb.call(t, n) && hb(e, n, t[n]);
                     return e;
                   })({}, this.props),
                 );
                 break;
               case 'operation':
-                t = n.createElement(vb, { item: e });
+                t = n.createElement(xb, { item: e });
             }
             return n.createElement(
               n.Fragment,
               null,
               t && n.createElement(Eu, { id: e.id, underlined: 'operation' === e.type }, t),
-              e.items && n.createElement(hb, { items: e.items }),
+              e.items && n.createElement(gb, { items: e.items }),
             );
           }
         };
-        mb = fb([om], mb);
-        const gb = e => n.createElement(Su, { compact: !0 }, e);
-        let yb = class extends n.Component {
+        yb = mb([om], yb);
+        const vb = e => n.createElement(Su, { compact: !0 }, e);
+        let bb = class extends n.Component {
           render() {
             const { name: e, description: t, externalDocs: r, level: i } = this.props.item,
               o = 2 === i ? Iu : Tu;
@@ -43062,7 +43088,7 @@
                   n.createElement(o, null, n.createElement(Uu, { to: this.props.item.id }), e),
                 ),
               ),
-              n.createElement(by, { parentId: this.props.item.id, source: t || '', htmlWrap: gb }),
+              n.createElement(by, { parentId: this.props.item.id, source: t || '', htmlWrap: vb }),
               r &&
                 n.createElement(
                   ju,
@@ -43072,24 +43098,24 @@
             );
           }
         };
-        yb = fb([om], yb);
-        let vb = class extends n.Component {
+        bb = mb([om], bb);
+        let xb = class extends n.Component {
           render() {
-            return n.createElement(ab, { operation: this.props.item });
+            return n.createElement(lb, { operation: this.props.item });
           }
         };
-        vb = fb([om], vb);
-        var bb = Object.defineProperty,
-          xb = Object.defineProperties,
-          wb = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
-          kb = Object.getOwnPropertySymbols,
-          Ob = Object.prototype.hasOwnProperty,
-          Sb = Object.prototype.propertyIsEnumerable,
-          Eb = (e, t, n) =>
+        xb = mb([om], xb);
+        var wb = Object.defineProperty,
+          kb = Object.defineProperties,
+          Ob = (Object.getOwnPropertyDescriptor, Object.getOwnPropertyDescriptors),
+          Sb = Object.getOwnPropertySymbols,
+          Eb = Object.prototype.hasOwnProperty,
+          _b = Object.prototype.propertyIsEnumerable,
+          Ab = (e, t, n) =>
             t in e
-              ? bb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? wb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        let _b = class extends n.Component {
+        let jb = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.ref = n.createRef()),
@@ -43119,11 +43145,11 @@
               },
               'operation' === e.type
                 ? n.createElement(
-                    Ab,
-                    ((e, t) => xb(e, wb(t)))(
+                    Cb,
+                    ((e, t) => kb(e, Ob(t)))(
                       ((e, t) => {
-                        for (var n in t || (t = {})) Ob.call(t, n) && Eb(e, n, t[n]);
-                        if (kb) for (var n of kb(t)) Sb.call(t, n) && Eb(e, n, t[n]);
+                        for (var n in t || (t = {})) Eb.call(t, n) && Ab(e, n, t[n]);
+                        if (Sb) for (var n of Sb(t)) _b.call(t, n) && Ab(e, n, t[n]);
                         return e;
                       })({}, this.props),
                       { item: e },
@@ -43150,7 +43176,7 @@
               !t &&
                 e.items &&
                 e.items.length > 0 &&
-                n.createElement(Rb, {
+                n.createElement(Nb, {
                   expanded: e.expanded,
                   items: e.items,
                   onActivate: this.props.onActivate,
@@ -43158,11 +43184,11 @@
             );
           }
         };
-        _b = ((e, t, n, r) => {
+        jb = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], _b);
-        const Ab = om(e => {
+        })([om], jb);
+        const Cb = om(e => {
           const { item: t } = e,
             r = n.createRef(),
             { showWebhookVerb: i } = n.useContext(Oa);
@@ -43185,32 +43211,32 @@
             )
           );
         });
-        var jb = Object.defineProperty,
-          Cb = (Object.getOwnPropertyDescriptor, Object.getOwnPropertySymbols),
-          Pb = Object.prototype.hasOwnProperty,
-          Tb = Object.prototype.propertyIsEnumerable,
-          Ib = (e, t, n) =>
+        var Pb = Object.defineProperty,
+          Tb = (Object.getOwnPropertyDescriptor, Object.getOwnPropertySymbols),
+          Ib = Object.prototype.hasOwnProperty,
+          Rb = Object.prototype.propertyIsEnumerable,
+          $b = (e, t, n) =>
             t in e
-              ? jb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? Pb(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n);
-        let Rb = class extends n.Component {
+        let Nb = class extends n.Component {
           render() {
             const { items: e, root: t, className: r } = this.props,
               i = null == this.props.expanded || this.props.expanded;
             return n.createElement(
               Sy,
               ((e, t) => {
-                for (var n in t || (t = {})) Pb.call(t, n) && Ib(e, n, t[n]);
-                if (Cb) for (var n of Cb(t)) Tb.call(t, n) && Ib(e, n, t[n]);
+                for (var n in t || (t = {})) Ib.call(t, n) && $b(e, n, t[n]);
+                if (Tb) for (var n of Tb(t)) Rb.call(t, n) && $b(e, n, t[n]);
                 return e;
               })({ className: r, style: this.props.style, expanded: i }, t ? { role: 'menu' } : {}),
               e.map((e, t) =>
-                n.createElement(_b, { key: t, item: e, onActivate: this.props.onActivate }),
+                n.createElement(jb, { key: t, item: e, onActivate: this.props.onActivate }),
               ),
             );
           }
         };
-        function $b() {
+        function Lb() {
           const [e, t] = (0, n.useState)(!1);
           return (
             (0, n.useEffect)(() => {
@@ -43225,12 +43251,12 @@
               : null
           );
         }
-        Rb = ((e, t, n, r) => {
+        Nb = ((e, t, n, r) => {
           for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
           return o;
-        })([om], Rb);
+        })([om], Nb);
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Nb = class extends n.Component {
+        let Db = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.activate = e => {
@@ -43254,7 +43280,7 @@
                 className: this.props.className,
                 options: { wheelPropagation: !1 },
               },
-              n.createElement(Rb, { items: e.items, onActivate: this.activate, root: !0 }),
+              n.createElement(Nb, { items: e.items, onActivate: this.activate, root: !0 }),
               n.createElement(
                 Cy,
                 null,
@@ -43265,31 +43291,31 @@
                     rel: 'noopener noreferrer',
                     href: 'https://redocly.com/redoc/',
                   },
-                  n.createElement($b, null),
+                  n.createElement(Lb, null),
                   'API docs by Redocly',
                 ),
               ),
             );
           }
         };
-        (Nb.contextType = Oa),
-          (Nb = ((e, t, n, r) => {
+        (Db.contextType = Oa),
+          (Db = ((e, t, n, r) => {
             for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
             return o;
-          })([om], Nb));
-        const Lb = ({ open: e }) => {
+          })([om], Db));
+        const Mb = ({ open: e }) => {
             const t = e ? 8 : -4;
             return n.createElement(
-              Mb,
+              zb,
               null,
-              n.createElement(Db, {
+              n.createElement(Fb, {
                 size: 15,
                 style: {
                   transform: `translate(2px, ${t}px) rotate(180deg)`,
                   transition: 'transform 0.2s ease',
                 },
               }),
-              n.createElement(Db, {
+              n.createElement(Fb, {
                 size: 15,
                 style: {
                   transform: `translate(2px, ${0 - t}px)`,
@@ -43298,7 +43324,7 @@
               }),
             );
           },
-          Db = ({ size: e = 10, className: t = '', style: r }) =>
+          Fb = ({ size: e = 10, className: t = '', style: r }) =>
             n.createElement(
               'svg',
               {
@@ -43320,7 +43346,7 @@
                 }),
               ),
             ),
-          Mb = ha.div`
+          zb = ha.div`
   user-select: none;
   width: 20px;
   height: 20px;
@@ -43330,10 +43356,10 @@
   color: ${e => e.theme.colors.primary.main};
 `;
         Object.defineProperty, Object.getOwnPropertyDescriptor;
-        let Fb;
-        Qr && (Fb = r(5114));
-        const zb = Fb && Fb(),
-          Ub = ha.div`
+        let Ub;
+        Qr && (Ub = r(5114));
+        const Bb = Ub && Ub(),
+          qb = ha.div`
   width: ${e => e.theme.sidebar.width};
   background-color: ${e => e.theme.sidebar.backgroundColor};
   overflow: hidden;
@@ -43360,7 +43386,7 @@
     display: none;
   }
 `,
-          Bb = ha.div`
+          Vb = ha.div`
   outline: none;
   user-select: none;
   background-color: ${({ theme: e }) => e.fab.backgroundColor};
@@ -43389,7 +43415,7 @@
     display: none;
   }
 `;
-        let qb = class extends n.Component {
+        let Wb = class extends n.Component {
           constructor() {
             super(...arguments),
               (this.state = { offsetTop: '0px' }),
@@ -43398,11 +43424,11 @@
               });
           }
           componentDidMount() {
-            zb && zb.add(this.stickyElement),
+            Bb && Bb.add(this.stickyElement),
               this.setState({ offsetTop: this.getScrollYOffset(this.context) });
           }
           componentWillUnmount() {
-            zb && zb.remove(this.stickyElement);
+            Bb && Bb.remove(this.stickyElement);
           }
           getScrollYOffset(e) {
             let t;
@@ -43421,7 +43447,7 @@
               n.Fragment,
               null,
               n.createElement(
-                Ub,
+                qb,
                 {
                   open: e,
                   className: this.props.className,
@@ -43434,19 +43460,19 @@
               ),
               !this.context.hideFab &&
                 n.createElement(
-                  Bb,
+                  Vb,
                   { onClick: this.toggleNavMenu },
-                  n.createElement(Lb, { open: e }),
+                  n.createElement(Mb, { open: e }),
                 ),
             );
           }
         };
-        (qb.contextType = Oa),
-          (qb = ((e, t, n, r) => {
+        (Wb.contextType = Oa),
+          (Wb = ((e, t, n, r) => {
             for (var i, o = t, a = e.length - 1; a >= 0; a--) (i = e[a]) && (o = i(o) || o);
             return o;
-          })([om], qb));
-        const Vb = ha.div`
+          })([om], Wb));
+        const Hb = ha.div`
   ${({ theme: e }) =>
     `\n  font-family: ${e.typography.fontFamily};\n  font-size: ${
       e.typography.fontSize
@@ -43460,7 +43486,7 @@
       e.typography.optimizeSpeed ? 'text-rendering: optimizeSpeed !important' : ''
     };\n\n  tap-highlight-color: rgba(0, 0, 0, 0);\n  text-size-adjust: 100%;\n\n  * {\n    box-sizing: border-box;\n    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);\n  }\n`};
 `,
-          Wb = ha.div`
+          Yb = ha.div`
   z-index: 1;
   position: relative;
   overflow: hidden;
@@ -43471,7 +43497,7 @@
 
   contain: layout;
 `,
-          Hb = ha.div`
+          Qb = ha.div`
   background: ${({ theme: e }) => e.rightPanel.backgroundColor};
   position: absolute;
   top: 0;
@@ -43488,10 +43514,10 @@
     display: none;
   `};
 `,
-          Yb = ha.div`
+          Gb = ha.div`
   padding: 5px 0;
 `,
-          Qb = ha.input.attrs(() => ({ className: 'search-input' }))`
+          Xb = ha.input.attrs(() => ({ className: 'search-input' }))`
   width: calc(100% - ${e => 8 * e.theme.spacing.unit}px);
   box-sizing: border-box;
   margin: 0 ${e => 4 * e.theme.spacing.unit}px;
@@ -43508,7 +43534,7 @@
   background-color: transparent;
   outline: none;
 `,
-          Gb = ha(e =>
+          Kb = ha(e =>
             n.createElement(
               'svg',
               {
@@ -43533,7 +43559,7 @@
     fill: ${e => e.theme.sidebar.textColor};
   }
 `,
-          Xb = ha.div`
+          Zb = ha.div`
   padding: ${e => e.theme.spacing.unit}px 0;
   background-color: ${({ theme: e }) => Nr(0.05, e.sidebar.backgroundColor)}};
   color: ${e => e.theme.sidebar.textColor};
@@ -43563,7 +43589,7 @@
     }
   }
 `,
-          Kb = ha.i`
+          Jb = ha.i`
   position: absolute;
   display: inline-block;
   width: ${e => 2 * e.theme.spacing.unit}px;
@@ -43576,9 +43602,9 @@
   font-style: normal;
   color: '#666';
 `;
-        var Zb = Object.defineProperty,
-          Jb = Object.getOwnPropertyDescriptor;
-        class ex extends n.PureComponent {
+        var ex = Object.defineProperty,
+          tx = Object.getOwnPropertyDescriptor;
+        class nx extends n.PureComponent {
           constructor(e) {
             super(e),
               (this.activeItemRef = null),
@@ -43636,11 +43662,11 @@
                 .map(e => ({ item: this.props.getItemById(e.meta), score: e.score }))
                 .sort((e, t) => t.score - e.score);
             return n.createElement(
-              Yb,
+              Gb,
               { role: 'search' },
-              this.state.term && n.createElement(Kb, { onClick: this.clear }, '×'),
-              n.createElement(Gb, null),
-              n.createElement(Qb, {
+              this.state.term && n.createElement(Jb, { onClick: this.clear }, '×'),
+              n.createElement(Kb, null),
+              n.createElement(Xb, {
                 value: this.state.term,
                 onKeyDown: this.handleKeyDown,
                 placeholder: 'Search...',
@@ -43653,10 +43679,10 @@
                   kd,
                   { options: { wheelPropagation: !1 } },
                   n.createElement(
-                    Xb,
+                    Zb,
                     { 'data-role': 'search:results' },
                     t.map((t, r) =>
-                      n.createElement(_b, {
+                      n.createElement(jb, {
                         item: Object.create(t.item, { active: { value: r === e } }),
                         onActivate: this.props.onActivate,
                         withoutChildren: !0,
@@ -43667,18 +43693,18 @@
                   ),
                 ),
               this.state.term && this.state.noResults
-                ? n.createElement(Xb, { 'data-role': 'search:results' }, di('noResultsFound'))
+                ? n.createElement(Zb, { 'data-role': 'search:results' }, di('noResultsFound'))
                 : null,
             );
           }
         }
-        (ex.contextType = Oa),
+        (nx.contextType = Oa),
           ((e, t, n, r) => {
-            for (var i, o = Jb(t, n), a = e.length - 1; a >= 0; a--)
+            for (var i, o = tx(t, n), a = e.length - 1; a >= 0; a--)
               (i = e[a]) && (o = i(t, n, o) || o);
-            o && Zb(t, n, o);
-          })([Pa.bind, (0, Pa.debounce)(400)], ex.prototype, 'searchCallback');
-        class tx extends n.Component {
+            o && ex(t, n, o);
+          })([Pa.bind, (0, Pa.debounce)(400)], nx.prototype, 'searchCallback');
+        class rx extends n.Component {
           componentDidMount() {
             this.props.store.onDidMount();
           }
@@ -43700,50 +43726,50 @@
                   Sa,
                   { value: r },
                   n.createElement(
-                    Vb,
+                    Hb,
                     { className: 'redoc-wrap' },
                     n.createElement(
-                      qb,
+                      Wb,
                       { menu: t, className: 'menu-content' },
                       n.createElement(dy, { info: e.info }),
                       (!r.disableSearch &&
-                        n.createElement(ex, {
+                        n.createElement(nx, {
                           search: i,
                           marker: o,
                           getItemById: t.getItemById,
                           onActivate: t.activateAndScroll,
                         })) ||
                         null,
-                      n.createElement(Nb, { menu: t }),
+                      n.createElement(Db, { menu: t }),
                     ),
                     n.createElement(
-                      Wb,
+                      Yb,
                       { className: 'api-content' },
                       n.createElement(ly, { store: a }),
-                      n.createElement(hb, { items: t.items }),
+                      n.createElement(gb, { items: t.items }),
                     ),
-                    n.createElement(Hb, null),
+                    n.createElement(Qb, null),
                   ),
                 ),
               ),
             );
           }
         }
-        tx.propTypes = { store: ka.instanceOf(ty).isRequired };
-        var nx = Object.defineProperty,
-          rx = Object.getOwnPropertySymbols,
-          ix = Object.prototype.hasOwnProperty,
-          ox = Object.prototype.propertyIsEnumerable,
-          ax = (e, t, n) =>
+        rx.propTypes = { store: ka.instanceOf(ty).isRequired };
+        var ix = Object.defineProperty,
+          ox = Object.getOwnPropertySymbols,
+          ax = Object.prototype.hasOwnProperty,
+          sx = Object.prototype.propertyIsEnumerable,
+          lx = (e, t, n) =>
             t in e
-              ? nx(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? ix(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n),
-          sx = (e, t) => {
-            for (var n in t || (t = {})) ix.call(t, n) && ax(e, n, t[n]);
-            if (rx) for (var n of rx(t)) ox.call(t, n) && ax(e, n, t[n]);
+          cx = (e, t) => {
+            for (var n in t || (t = {})) ax.call(t, n) && lx(e, n, t[n]);
+            if (ox) for (var n of ox(t)) sx.call(t, n) && lx(e, n, t[n]);
             return e;
           };
-        const lx = function (e) {
+        const ux = function (e) {
           const { spec: t, specUrl: i, options: o = {}, onLoaded: a } = e,
             s = ki(o.hideLoading, !1),
             l = new Si(o);
@@ -43756,33 +43782,33 @@
             null,
             n.createElement(
               Mu,
-              { spec: t ? sx({}, t) : void 0, specUrl: i, options: o, onLoaded: a },
+              { spec: t ? cx({}, t) : void 0, specUrl: i, options: o, onLoaded: a },
               ({ loading: e, store: t }) =>
                 e
                   ? s
                     ? null
                     : n.createElement(wa, { color: l.theme.colors.primary.main })
-                  : n.createElement(tx, { store: t }),
+                  : n.createElement(rx, { store: t }),
             ),
           );
         };
-        var cx = Object.defineProperty,
-          ux = Object.getOwnPropertySymbols,
-          px = Object.prototype.hasOwnProperty,
-          dx = Object.prototype.propertyIsEnumerable,
-          fx = (e, t, n) =>
+        var px = Object.defineProperty,
+          dx = Object.getOwnPropertySymbols,
+          fx = Object.prototype.hasOwnProperty,
+          hx = Object.prototype.propertyIsEnumerable,
+          mx = (e, t, n) =>
             t in e
-              ? cx(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
+              ? px(e, t, { enumerable: !0, configurable: !0, writable: !0, value: n })
               : (e[t] = n),
-          hx = (e, t) => {
-            for (var n in t || (t = {})) px.call(t, n) && fx(e, n, t[n]);
-            if (ux) for (var n of ux(t)) dx.call(t, n) && fx(e, n, t[n]);
+          gx = (e, t) => {
+            for (var n in t || (t = {})) fx.call(t, n) && mx(e, n, t[n]);
+            if (dx) for (var n of dx(t)) hx.call(t, n) && mx(e, n, t[n]);
             return e;
           };
         Dt({ useProxies: 'ifavailable' });
-        const mx = '2.1.1',
-          gx = '18c65aa3';
-        function yx(e) {
+        const yx = '2.1.1',
+          vx = '59d5bc50';
+        function bx(e) {
           const t = (function (e) {
               const t = {},
                 n = e.attributes;
@@ -43800,7 +43826,7 @@
           }
           return n;
         }
-        function vx(e, t = {}, r = Gr('redoc'), i) {
+        function xx(e, t = {}, r = Gr('redoc'), i) {
           if (null === r)
             throw new Error(
               '"element" argument is not provided and <redoc> tag is not found on the page',
@@ -43809,27 +43835,27 @@
           'string' == typeof e ? (a = e) : 'object' == typeof e && (s = e),
             (0, o.render)(
               n.createElement(
-                lx,
-                { spec: s, onLoaded: i, specUrl: a, options: hx(hx({}, t), yx(r)) },
+                ux,
+                { spec: s, onLoaded: i, specUrl: a, options: gx(gx({}, t), bx(r)) },
                 ['Loading...'],
               ),
               r,
             );
         }
-        function bx(e = Gr('redoc')) {
+        function wx(e = Gr('redoc')) {
           e && (0, o.unmountComponentAtNode)(e);
         }
-        function xx(e, t = Gr('redoc'), r) {
+        function kx(e, t = Gr('redoc'), r) {
           const i = ty.fromJS(e);
           setTimeout(() => {
-            (0, o.hydrate)(n.createElement(tx, { store: i }), t, r);
+            (0, o.hydrate)(n.createElement(rx, { store: i }), t, r);
           }, 0);
         }
         !(function () {
           const e = Gr('redoc');
           if (!e) return;
           const t = e.getAttribute('spec-url');
-          t && vx(t, {}, e);
+          t && xx(t, {}, e);
         })();
       })(),
       i
