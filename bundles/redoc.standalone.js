@@ -31479,7 +31479,7 @@
                   n.createElement('small', null, ' ReDoc Version: ', '2.1.1'),
                   ' ',
                   n.createElement('br', null),
-                  n.createElement('small', null, ' Commit: ', '55224165'),
+                  n.createElement('small', null, ' Commit: ', 'a84656b8'),
                 )
               : n.createElement(n.Fragment, null, n.Children.only(this.props.children));
           }
@@ -43809,7 +43809,7 @@
           };
         Dt({ useProxies: 'ifavailable' });
         const yx = '2.1.1',
-          bx = '55224165';
+          bx = 'a84656b8';
         function vx(e) {
           const t = (function (e) {
               const t = {},

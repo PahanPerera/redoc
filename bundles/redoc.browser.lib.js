@@ -3918,7 +3918,7 @@
                   e.createElement('small', null, ' ReDoc Version: ', '2.1.1'),
                   ' ',
                   e.createElement('br', null),
-                  e.createElement('small', null, ' Commit: ', '55224165'),
+                  e.createElement('small', null, ' Commit: ', 'a84656b8'),
                 )
               : e.createElement(e.Fragment, null, e.Children.only(this.props.children));
           }
