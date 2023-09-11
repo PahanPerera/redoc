@@ -97,7 +97,7 @@ export const OperationMenuItemContent = observer((props: OperationMenuItemConten
   return (
     <MenuItemLabel depth={item.depth} active={item.active} deprecated={item.deprecated} ref={ref}>
       {item.isWebhook ? (
-        <OperationBadge type="hook">
+        <OperationBadge type={item.httpVerb}>
           {showWebhookVerb ? item.httpVerb : l('webhook')}
         </OperationBadge>
       ) : (

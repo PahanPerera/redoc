@@ -68,6 +68,14 @@ export const OperationBadge = styled.span.attrs((props: { type: string }) => ({
   &.schema {
     background-color: ${({ theme }) => theme.colors.http.basic};
   }
+
+  &.publish {
+    background-color: ${({ theme }) => theme.colors.http.publish};
+  }
+
+  &.subscribe {
+    background-color: ${({ theme }) => theme.colors.http.subscribe};
+  }
 `;
 
 function menuItemActive(

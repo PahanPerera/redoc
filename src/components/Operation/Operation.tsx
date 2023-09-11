@@ -28,9 +28,8 @@ export interface OperationProps {
 }
 
 export const Operation = observer(({ operation }: OperationProps): JSX.Element => {
-  const { name: summary, description, deprecated, externalDocs, isWebhook, httpVerb } = operation;
+  const { name: summary, description, deprecated, externalDocs, isWebhook } = operation;
   const hasDescription = !!(description || externalDocs);
-  const { showWebhookVerb } = React.useContext(OptionsContext);
   return (
     <OptionsContext.Consumer>
       {options => (
@@ -42,7 +41,7 @@ export const Operation = observer(({ operation }: OperationProps): JSX.Element =
               {isWebhook && (
                 <Badge type="primary">
                   {/* async-pahan */}
-                  {showWebhookVerb && httpVerb && httpVerb.toUpperCase()}
+                  {operation.isWebhook && 'ASYNC'}
                 </Badge>
               )}
             </H2>
