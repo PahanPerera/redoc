@@ -3376,6 +3376,8 @@
               basic: '#707070',
               link: '#07818F',
               head: '#A23DAD',
+              publish: '#186FAF',
+              subscribe: '#2F8132',
             },
           },
           schema: {
@@ -3916,7 +3918,7 @@
                   e.createElement('small', null, ' ReDoc Version: ', '2.1.1'),
                   ' ',
                   e.createElement('br', null),
-                  e.createElement('small', null, ' Commit: ', '59d5bc50'),
+                  e.createElement('small', null, ' Commit: ', '55224165'),
                 )
               : e.createElement(e.Fragment, null, e.Children.only(this.props.children));
           }
@@ -11762,6 +11764,14 @@
   &.schema {
     background-color: ${({ theme: e }) => e.colors.http.basic};
   }
+
+  &.publish {
+    background-color: ${({ theme: e }) => e.colors.http.publish};
+  }
+
+  &.subscribe {
+    background-color: ${({ theme: e }) => e.colors.http.subscribe};
+  }
 `;
         function Ic(e, { theme: t }, r) {
           return e > 1 ? t.sidebar.level1Items[r] : 1 === e ? t.sidebar.groupItems[r] : '';
@@ -12911,26 +12921,18 @@
   margin-bottom: ${({ theme: e }) => 6 * e.spacing.unit}px;
 `,
           bu = (0, ua.observer)(({ operation: t }) => {
-            const {
-                name: r,
-                description: n,
-                deprecated: o,
-                externalDocs: i,
-                isWebhook: s,
-                httpVerb: a,
-              } = t,
-              l = !(!n && !i),
-              { showWebhookVerb: c } = e.useContext(ce);
-            return e.createElement(ce.Consumer, null, p => {
+            const { name: r, description: n, deprecated: o, externalDocs: i, isWebhook: s } = t,
+              a = !(!n && !i);
+            return e.createElement(ce.Consumer, null, l => {
               return e.createElement(
                 ui,
-                ((u = ((e, t) => {
+                ((c = ((e, t) => {
                   for (var r in t || (t = {})) mu.call(t, r) && gu(e, r, t[r]);
                   if (hu) for (var r of hu(t)) fu.call(t, r) && gu(e, r, t[r]);
                   return e;
                 })({}, { [ei]: t.operationHash })),
-                (d = { id: t.operationHash }),
-                uu(u, du(d))),
+                (p = { id: t.operationHash }),
+                uu(c, du(p))),
                 e.createElement(
                   ai,
                   null,
@@ -12941,10 +12943,10 @@
                     r,
                     ' ',
                     o && e.createElement(Pi, { type: 'warning' }, ' Deprecated '),
-                    s && e.createElement(Pi, { type: 'primary' }, c && a && a.toUpperCase()),
+                    s && e.createElement(Pi, { type: 'primary' }, t.isWebhook && 'ASYNC'),
                   ),
-                  p.pathInMiddlePanel && !s && e.createElement(Gc, { operation: t, inverted: !0 }),
-                  l &&
+                  l.pathInMiddlePanel && !s && e.createElement(Gc, { operation: t, inverted: !0 }),
+                  a &&
                     e.createElement(
                       yu,
                       null,
@@ -12964,13 +12966,13 @@
                 e.createElement(
                   pi,
                   null,
-                  !p.pathInMiddlePanel && e.createElement(Gc, { operation: t }),
+                  !l.pathInMiddlePanel && e.createElement(Gc, { operation: t }),
                   e.createElement(lu, { operation: t }),
                   e.createElement(cu, { operation: t }),
                   e.createElement(su, { callbacks: t.callbacks }),
                 ),
               );
-              var u, d;
+              var c, p;
             });
           });
         var xu = Object.defineProperty,
@@ -13155,7 +13157,7 @@
               Lc,
               { depth: r.depth, active: r.active, deprecated: r.deprecated, ref: n },
               r.isWebhook
-                ? e.createElement(Ac, { type: 'hook' }, o ? r.httpVerb : _('webhook'))
+                ? e.createElement(Ac, { type: r.httpVerb }, o ? r.httpVerb : _('webhook'))
                 : e.createElement(Ac, { type: r.httpVerb }, yt(r.httpVerb)),
               e.createElement(
                 Dc,
